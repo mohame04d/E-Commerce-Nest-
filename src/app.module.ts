@@ -12,6 +12,7 @@ import { CouponModule } from './Coupon/brand.module';
 import { Supplier } from './supplier/supplier.schema';
 import { SupplierModule } from './supplier/supplier.module';
 import { RequestModule } from './request/request.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { RequestModule } from './request/request.module';
      BrandModule,
      CouponModule,
      SupplierModule,
-     RequestModule
+     RequestModule,
+     ProductModule
   ],
   controllers: [],
   providers: [],
