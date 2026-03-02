@@ -4,6 +4,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './product.schema';
 import { Model } from 'mongoose';
+import { APIFeatures } from 'src/utils/apiFeatures';
 
 @Injectable()
 export class productService {
@@ -13,6 +14,17 @@ export class productService {
       name: createProductDto.title,
     });
     if (product) throw new HttpException('Product already exist', 400);
+
+    const category = await this.ProductModel.findById(
+      createProductDto.category,
+    );
+    if (!category) throw new HttpException('category not exist', 400);
+
+    const subCategory = await this.ProductModel.findById(
+      createProductDto.subCategory,
+    );
+    if (!subCategory) throw new HttpException('subCategory not exist', 400);
+
     const newProduct = await this.ProductModel.create(createProductDto);
     return {
       status: 201,
@@ -20,30 +32,49 @@ export class productService {
       data: { newProduct },
     };
   }
-  async findAll() {
-     const products = await this.ProductModel.find();
+  async findAll(query: any) {
+    const features = new APIFeatures(this.ProductModel.find(), query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate()
+      .search();
+    const products = await features.getQuery();
     return {
-      status:'200',
-      result:products.length,
-      data:{products}
-    }
+      status: '200',
+      result: products.length,
+      data: { products },
+    };
   }
 
-  async findOne(id:string) {
+  async findOne(id: string) {
     const product = await this.ProductModel.findById(id);
     if (!product) throw new NotFoundException('Product not found');
     return {
-      status:'200',
-      data:{product}
-    }
+      status: '200',
+      data: { product },
+    };
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
     const product = await this.ProductModel.findById(id);
     if (!product) throw new NotFoundException('Product not found');
-    const updatedProduct = await this.ProductModel
-      .findByIdAndUpdate(id, updateProductDto, { new: true })
-      .select('-__v');
+
+    const category = await this.ProductModel.findById(
+      updateProductDto.category,
+    );
+    if (!category) throw new HttpException('category not exist', 400);
+
+    const subCategory = await this.ProductModel.findById(
+      updateProductDto.subCategory,
+    );
+    if (!subCategory) throw new HttpException('subCategory not exist', 400);
+
+    const updatedProduct = await this.ProductModel.findByIdAndUpdate(
+      id,
+      updateProductDto,
+      { new: true },
+    ).select('-__v');
     return {
       status: 200,
       message: 'Product is updated',
@@ -51,13 +82,13 @@ export class productService {
     };
   }
 
-  async remove(id:string) {
-    const product = await this.ProductModel.findById(id)
+  async remove(id: string) {
+    const product = await this.ProductModel.findById(id);
     if (!product) throw new NotFoundException('Product not found');
-    await this.ProductModel.deleteOne({id:id})
+    await this.ProductModel.deleteOne({ id: id });
     return {
-      status:204,
-      message:"Product deleted successfully"
-    }
+      status: 204,
+      message: 'Product deleted successfully',
+    };
   }
 }

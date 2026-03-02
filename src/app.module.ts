@@ -13,6 +13,7 @@ import { Supplier } from './supplier/supplier.schema';
 import { SupplierModule } from './supplier/supplier.module';
 import { RequestModule } from './request/request.module';
 import { ProductModule } from './product/product.module';
+import { ReviewModule } from './review/review.module';
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { ProductModule } from './product/product.module';
      CouponModule,
      SupplierModule,
      RequestModule,
-     ProductModule
+     ProductModule,
+     ReviewModule
   ],
   controllers: [],
   providers: [],
