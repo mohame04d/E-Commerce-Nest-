@@ -11,7 +11,7 @@ export class CreateProductDto {
   @MinLength(3, { message: 'name must be at least 3 characters' })
   @MaxLength(30, { message: 'name must be at most 30' })
   @IsNotEmpty({ message: 'name must be required' })
-  name: string;
+  title: string;
   @IsString({ message: 'avatar must be string' })
   @IsUrl({}, { message: 'image must be a valid URL' })
   @IsOptional()

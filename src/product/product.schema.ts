@@ -5,11 +5,11 @@ export type CategoryDocument = HydratedDocument<Product>;
 export class Product {
   @Prop({
     type: String,  
-    minLength: [3, 'name must be at least 3 character'],
-    maxLength:[30,'name must be at most 30 character'],
-    required:[true,'name is required']
+    minLength: [3, 'title must be at least 3 character'],
+    maxLength:[30,'title must be at most 30 character'],
+    required:[true,'title is required']
   })
-  name: string;
+  title: string;
   @Prop({
     type:String
   })

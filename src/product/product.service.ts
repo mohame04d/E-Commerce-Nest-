@@ -10,7 +10,7 @@ export class productService {
   constructor(@InjectModel('Product') private ProductModel: Model<Product>) {}
   async create(createProductDto: CreateProductDto) {
     const product = await this.ProductModel.findOne({
-      name: createProductDto.name,
+      name: createProductDto.title,
     });
     if (product) throw new HttpException('Product already exist', 400);
     const newProduct = await this.ProductModel.create(createProductDto);
