@@ -13,6 +13,10 @@ import { Supplier } from './supplier/supplier.schema';
 import { SupplierModule } from './supplier/supplier.module';
 import { RequestModule } from './request/request.module';
 import { ProductModule } from './product/product.module';
+import { ReviewModule } from './review/review.module';
+import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
+import { TaxModule } from './tax/tax.module';
 
 @Module({
   imports: [
@@ -34,13 +38,18 @@ import { ProductModule } from './product/product.module';
         },
       },
     }),
+    UserModule,
      CategoryModule,
      SubCategoryModule,
      BrandModule,
      CouponModule,
      SupplierModule,
      RequestModule,
-     ProductModule
+     ProductModule,
+     ReviewModule,
+     CartModule,
+     OrderModule,
+     TaxModule
   ],
   controllers: [],
   providers: [],
