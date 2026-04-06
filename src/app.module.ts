@@ -18,16 +18,36 @@ import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
 import { TaxModule } from './tax/tax.module';
 import { CloudinaryModule } from './upload-files/upload-files.module';
+// import { I18nModule } from 'nestjs-i18n/dist/i18n.module';
+// import path from 'path';
+// import {
+//   QueryResolver,
+//   AcceptLanguageResolver,
+//   HeaderResolver,
+// } from 'nestjs-i18n';
+// import { join } from 'path';
 
 @Module({
   imports: [
+    //   I18nModule.forRoot({
+    //   fallbackLanguage: 'en',
+    //   loaderOptions: {
+    //     path: join(__dirname, '/apps/api/i18n/'),
+    //     watch: true,
+    //   },
+    //   resolvers: [
+    //     { use: QueryResolver, options: ['lang'] },
+    //     AcceptLanguageResolver,
+    //     new HeaderResolver(['x-lang']),
+    //   ],
+    // }),
     ConfigModule.forRoot(),
     MongooseModule.forRoot('mongodb://localhost:27017/E-CommerceAPIByNest'),
     UserModule,
     JwtModule.register({
       global: true,
       secret:process.env.JWT_SECRET,
-      // signOptions:{expiresIn:'60s'}
+      signOptions:{expiresIn:'60s'}
     }),
     AuthModule,
      MailerModule.forRoot({

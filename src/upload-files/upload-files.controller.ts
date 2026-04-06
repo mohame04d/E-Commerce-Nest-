@@ -24,7 +24,7 @@ export class AppController {
   // @Roles(['admin', 'user'])
   // @UseGuards(AuthGuard)
   @UseInterceptors(FilesInterceptor('files', 5))
-uploadImages(
+uploadFiles(
   @UploadedFiles(
     new ParseFilePipe({
       validators: [

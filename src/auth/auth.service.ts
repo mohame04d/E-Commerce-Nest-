@@ -7,7 +7,12 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/user/user.schema';
-import { ChangePasswordDto, ResetPasswordDto, signInDto, SignUpDto } from './dto/auth.dto';
+import {
+  ChangePasswordDto,
+  ResetPasswordDto,
+  signInDto,
+  SignUpDto,
+} from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-auth.dto';
@@ -41,10 +46,19 @@ export class AuthService {
     const token = await this.jwtServices.signAsync(payload, {
       secret: process.env.JWT_SECRET,
     });
+
+    const refreshToken = await this.jwtServices.signAsync(
+      { ...payload, countEx: 5 },
+      {
+        secret: process.env.JWT_REFRESH_SECRET,
+        expiresIn: '7d',
+      },
+    );
     return {
       status: 'success',
       data: { userCreated },
       access_token: token,
+      refresh_token: refreshToken,
     };
   }
   async signIn(signInDto: signInDto) {
@@ -64,10 +78,20 @@ export class AuthService {
     const token = await this.jwtServices.signAsync(payload, {
       secret: process.env.JWT_SECRET,
     });
+
+    // Generate Refresh Token
+    const refreshToken = await this.jwtServices.signAsync(
+      { ...payload, countEx: 5 },
+      {
+        secret: process.env.JWT_REFRESH_SECRET,
+        expiresIn: '7d',
+      },
+    );
     return {
       status: 'success',
       data: { user },
       access_token: token,
+      refresh_token: refreshToken,
     };
   }
   async resetPassword(email: ResetPasswordDto) {
@@ -81,40 +105,85 @@ export class AuthService {
       { vertificationCode: code },
       { new: true },
     );
-    const message = 
-    `<div>
+    const message = `<div>
     <h1>Forgot your password?</h1>
-    <p>verificationCode is <h3>${code}</h3></p>`
+    <p>verificationCode is <h3>${code}</h3></p>`;
     this.mailService.sendMail({
       from: 'mohakim88tr@gmail.com',
       to: user.email,
       subject: 'your password reset token( valid for 10 mintues)',
-      html:message
+      html: message,
     });
     return {
-      status:'success',
-      message:`code sent successfully on your email ${user.email}`
-    }
+      status: 'success',
+      message: `code sent successfully on your email ${user.email}`,
+    };
   }
-  async verifyCode({email,code}){
-    const user = await this.userModel.findOne({email}).select('vertificationCode');
+  async verifyCode({ email, code }) {
+    const user = await this.userModel
+      .findOne({ email })
+      .select('vertificationCode');
     if (!user) throw new NotFoundException('user not found');
-    if(user.vertificationCode!==code)
+    if (user.vertificationCode !== code)
       throw new UnauthorizedException('invalid code');
-    await this.userModel.findOneAndUpdate({email},{vertificationCode:null},{new:true});
+    await this.userModel.findOneAndUpdate(
+      { email },
+      { vertificationCode: null },
+      { new: true },
+    );
     return {
-      status:'success',
-      message:'code verified successfully'
-    }
+      status: 'success',
+      message: 'code verified successfully',
+    };
   }
-  async changePassword(changePassword:signInDto){
-    const user = await this.userModel.findOne({email:changePassword.email});
+  async changePassword(changePassword: signInDto) {
+    const user = await this.userModel.findOne({ email: changePassword.email });
     if (!user) throw new NotFoundException('user not found');
-    const password = await bcrypt.hash(changePassword.password,12);
-    await this.userModel.findOneAndUpdate({email:changePassword.email},{password},{new:true})
+    const password = await bcrypt.hash(changePassword.password, 12);
+    await this.userModel.findOneAndUpdate(
+      { email: changePassword.email },
+      { password },
+      { new: true },
+    );
     return {
-      status:'success',
-      message:'password changed successfully'
+      status: 'success',
+      message: 'password changed successfully',
+    };
+  }
+
+  async refreshToken(refresh_Token: string) {
+    try {
+      const decoded = await this.jwtServices.verifyAsync(refresh_Token, {
+        secret: process.env.JWT_REFRESH_SECRET,
+      });
+      if (!decoded || decoded.countEx <= 0)
+        throw new UnauthorizedException('Invalid refresh token, please sign in again');
+      const user = await this.userModel.findById(decoded._id);
+      if (!user) throw new NotFoundException('user not found');
+      const payload = {
+        _id: user._id,
+        email: user.email,
+        role: user.role,
+      };
+      const accessToken = await this.jwtServices.signAsync(payload, {
+        secret: process.env.JWT_SECRET,
+      });
+      const newRefreshToken = await this.jwtServices.signAsync(
+        { ...payload, countEx: decoded.countEx - 1 },
+        {
+          secret: process.env.JWT_REFRESH_SECRET,
+          expiresIn: '7d',
+        }
+      );
+
+      return {
+        status: 'success',
+        data: { user },
+        access_token: accessToken,
+        refresh_token: newRefreshToken,
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid refresh token, please sign in again');
     }
   }
 }

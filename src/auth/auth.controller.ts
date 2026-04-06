@@ -1,4 +1,4 @@
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Param, Post, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   ChangePasswordDto,
@@ -46,4 +46,11 @@ export class AuthController {
     changePassword(@Body(new ValidationPipe({forbidNonWhitelisted:true}))changePassword:signInDto){
       return this.authService.changePassword(changePassword);
   }
+  @Post('/refresh-token')   // بدون :refreshToken في الـ path
+refreshToken(
+  @Body('refreshToken') refresh_Token: string   // أو @Body() body: { refreshToken: string }
+) {
+  console.log(refresh_Token);
+  return this.authService.refreshToken(refresh_Token);
+}
 }

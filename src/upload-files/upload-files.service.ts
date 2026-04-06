@@ -22,7 +22,7 @@ export class CloudinaryService {
     });
   }
 
-  async uploadFiles(files: any[]): Promise<CloudinaryResponse[]> {
+    uploadFiles(files: any[]): Promise<CloudinaryResponse[]> {
     const uploadPromises = files.map((file) => this.uploadFile(file));
     return Promise.all(uploadPromises);
   }
