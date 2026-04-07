@@ -19,6 +19,7 @@ import { OrderModule } from './order/order.module';
 import { TaxModule } from './tax/tax.module';
 import { CloudinaryModule } from './upload-files/upload-files.module';
 import { OAuthModule } from './oauth/oauth.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 // import { I18nModule } from 'nestjs-i18n/dist/i18n.module';
 // import path from 'path';
 // import {
@@ -42,6 +43,16 @@ import { OAuthModule } from './oauth/oauth.module';
     //     new HeaderResolver(['x-lang']),
     //   ],
     // }),
+
+    //throttle requests to 60000 requests per 10ms
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 10,
+        },
+      ],
+    }),
     ConfigModule.forRoot(),
     MongooseModule.forRoot('mongodb://localhost:27017/E-CommerceAPIByNest'),
     UserModule,
