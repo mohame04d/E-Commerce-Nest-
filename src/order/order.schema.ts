@@ -9,12 +9,12 @@ export class Order {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   })
-  user: string;
+  user!: string;
   @Prop({
     type: String,
     required: false,
   })
-  sessionId: string;
+  sessionId!: string;
   @Prop({
       type: [
         {
@@ -34,7 +34,7 @@ export class Order {
         },
       ],
     })
-    cartItems: {
+    cartItems!: {
     productId: mongoose.Types.ObjectId;
     quantity: number;
     color: string;
@@ -43,47 +43,47 @@ export class Order {
     type: Number,
     default: 0,
   })
-  taxPrice: number;
+  taxPrice!: number;
   @Prop({
     type: Number,
     default: 0,
   })
-  shippingPrice: number;
+  shippingPrice!: number;
   @Prop({
     type: Number,
     required: true,
     default: 0,
   })
-  totalOrderPrice: number;
+  totalOrderPrice!: number;
   @Prop({
     type: String,
     default: 'card',
     enum: ['cash', 'card'],
   })
-  paymentMethodType: string;
+  paymentMethodType!: string;
   @Prop({
     type: Boolean,
     default: false,
   })
-  isPaid: boolean;
+  isPaid!: boolean;
   @Prop({
     type: Date,
     required: false,
   })
-  paidAt: Date;
+  paidAt!: Date;
   @Prop({
     type: Boolean,
     default: false,
   })
-  isDeliverd: boolean;
+  isDeliverd!: boolean;
   @Prop({
     type: Date,
   })
-  deliverdAt: Date;
+  deliverdAt!: Date;
   @Prop({
     type: String,
   })
-  shippingAddress: string;
+  shippingAddress!: string;
 }
 
 export const orderSchema = SchemaFactory.createForClass(Order);

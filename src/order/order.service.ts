@@ -270,6 +270,7 @@ export class OrderService {
     try {
       event = stripe.webhooks.constructEvent(payload, sig, endpointSecret);
     } catch (err) {
+      // @ts-ignore
       console.log(`Webhook Error: ${err.message}`);
       return;
     }

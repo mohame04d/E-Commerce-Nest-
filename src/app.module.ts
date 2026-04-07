@@ -18,6 +18,7 @@ import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
 import { TaxModule } from './tax/tax.module';
 import { CloudinaryModule } from './upload-files/upload-files.module';
+import { OAuthModule } from './oauth/oauth.module';
 // import { I18nModule } from 'nestjs-i18n/dist/i18n.module';
 // import path from 'path';
 // import {
@@ -71,7 +72,8 @@ import { CloudinaryModule } from './upload-files/upload-files.module';
      CartModule,
      OrderModule,
      TaxModule,
-      CloudinaryModule
+      CloudinaryModule,
+      OAuthModule
   ],
   controllers: [],
   providers: [],
