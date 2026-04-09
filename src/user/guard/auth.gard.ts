@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const token = this.extractToken(request);
     const roles = this.reflector.get(Roles, context.getHandler());
     if (!roles) return true;
     if (!token) {
@@ -31,16 +31,23 @@ export class AuthGuard implements CanActivate {
       if (!payload._id) {
         throw new UnauthorizedException();
       }
-      if (roles && !payload.role.toLowerCase() || !roles.includes(payload.role.toLowerCase())){
-        throw new UnauthorizedException();}
+      if (
+        (roles && !payload.role.toLowerCase()) ||
+        !roles.includes(payload.role.toLowerCase())
+      ) {
+        throw new UnauthorizedException();
+      }
       request['user'] = payload;
-          return true;
+      return true;
     } catch {
       throw new UnauthorizedException();
     }
   }
 
-  private extractTokenFromHeader(request: Request): string | undefined {
+  private extractToken(request: Request): string | undefined {
+    if (request.cookies?.token) {
+      return request.cookies.token;
+    }
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
   }
