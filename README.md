@@ -1,93 +1,99 @@
-# 🛒 E-Commerce Backend API
+🛒 E-Commerce API (NestJS + MongoDB)
 
-A fully-featured **E-Commerce backend system** built with **NestJS**, **MongoDB**, and **Mongoose**. This system manages products, categories, users, suppliers, coupons, and requests with authentication and secure operations.
+A scalable and modular E-Commerce RESTful API built with NestJS and MongoDB (Mongoose).
+The project follows best practices for clean architecture, authentication, and performance optimization.
 
-The project is designed with modularity, scalability, and clean architecture principles in mind.
+🚀 Features
+🔐 Authentication & Authorization
+JWT Authentication
+Refresh Token System
+Google OAuth Login
+👤 User Management
+🛍️ Product Management
+🧾 Orders & Cart System
+🏷️ Categories & Subcategories
+🎟️ Coupons & Discounts
+⭐ Reviews & Ratings
+🏢 Brands & Suppliers
+💰 Tax Handling
+📦 Request Management
+🧠 Tech Stack
+Backend Framework: NestJS
+Database: MongoDB (Mongoose)
+Validation: class-validator
+Authentication: JWT + Refresh Tokens
+OAuth: Google OAuth
+File Upload: Cloudinary
+Payment Integration: Stripe
+📂 Project Modules
+Auth Module
+Users Module
+Products Module
+Cart Module
+Orders Module
+Categories Module
+Subcategories Module
+Coupons Module
+Brands Module
+Reviews Module
+Tax Module
+Suppliers Module
+Request Module
+⚙️ Advanced Features
+🔎 Filtering (by price, category, brand, etc.)
+📊 Sorting (asc / desc)
+📄 Pagination (optimized queries)
+☁️ Image Upload via Cloudinary
+💳 Secure Payment with Stripe
+🔐 Authentication Flow
+User signs up / logs in
+Server returns:
+Access Token
+Refresh Token
+Access Token used for protected routes
+Refresh Token used to generate new tokens
+💳 Payment Flow (Stripe)
+Create Order
+Generate Payment Intent
+Confirm Payment
+Update Order Status
+📦 Installation
+# Clone the repo
+git clone https://github.com/mohame04d/e-commerce-api.git
 
----
+# Install dependencies
+npm install
 
-## 🏗 Modules Implemented
+# Run the app
+npm run start:dev
+⚙️ Environment Variables
 
-I developed and handled the following modules:
+Create a .env file and add:
 
-- 👤 **Authentication & Authorization (auth)** – secure login/signup using **JWT** and **Bcrypt** for password hashing  
-- 👥 **Users Management**  
-- 🏷 **Category**  
-- 🏷 **Subcategory**  
-- 🏭 **Brand**  
-- 🎟 **Coupon Management**  
-- 📦 **Product Management**  
-- 📝 **Requests** (customer or supplier requests)  
-- 🏢 **Suppliers**  
+PORT=3000
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+REFRESH_TOKEN_SECRET=your_refresh_secret
 
-Each module follows a modular structure with proper validation, error handling, and database relations.
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 
----
+CLOUDINARY_NAME=your_cloudinary_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 
-## ⚙️ Technologies Used
+STRIPE_SECRET_KEY=your_stripe_secret
+📌 API Features
+RESTful API Design
+Modular Architecture
+Scalable Code Structure
+Error Handling Middleware
+Secure Authentication
 
-This project was built using:
+👨‍💻 Author
 
-- **NestJS** – Node.js framework for building scalable APIs  
-- **MongoDB** – NoSQL database  
-- **Mongoose** – ODM for MongoDB  
-- **JWT (JSON Web Token)** – Secure authentication  
-- **Bcrypt** – Password hashing  
-- **Joi / Class-Validator** – Data validation  
-- **Axios** – External API calls (if needed)  
-- **Node-Cron** – Optional scheduled tasks  
+Mohamed Hakem
 
----
+⭐ Support
 
-## 🔥 Key Features
-
-- ✅ Full authentication system with **JWT & Bcrypt**  
-- ✅ User roles and authorization  
-- ✅ Product CRUD operations  
-- ✅ Category, Subcategory, and Brand management  
-- ✅ Coupon and discount management  
-- ✅ Supplier and request management  
-- ✅ Advanced filtering, sorting, pagination, and field limiting  
-- ✅ Clean modular structure for easy scalability  
-- ✅ Secure API routes with proper validation and error handling  
-
----
-
-## 🛠 API Capabilities
-
-The API supports:
-
-- CRUD operations for all modules  
-- Authentication & secure user sessions  
-- Advanced query features (Filter, Sort, Pagination, Search)  
-- Relational references using Mongoose `.populate()`  
-- Input validation and error handling  
-
----
-
-## 📂 Architecture
-
-The project follows:
-
-- Modular and clean architecture  
-- Separation of concerns  
-- Reusable utility classes (e.g., API Features)  
-- Proper folder structure for controllers, services, and schemas  
-
----
-
-## 📌 Future Improvements
-
-- Add caching with Redis for products and categories  
-- Add email notifications for users and suppliers  
-- Implement rate limiting for API endpoints  
-- Dockerize the project for production deployment  
-- CI/CD pipeline for automated testing and deployment  
-
----
-
-## 📌 Notes
-
-- Passwords are securely hashed with **Bcrypt**  
-- Authentication and authorization handled using **JWT**  
-- Designed with **NestJS best practices** for scalability and maintainability
+If you like this project, give it a ⭐ on GitHub!
