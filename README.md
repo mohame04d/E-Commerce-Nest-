@@ -1,85 +1,165 @@
-🛒 E-Commerce API
-🚀 Built with NestJS & MongoDB
+# E-Commerce Backend
 
-A production-ready E-Commerce Backend API built using NestJS and MongoDB (Mongoose), designed with scalability, security, and clean architecture in mind.
+**مشروع متجر إلكتروني كامل (Backend) مبني بـ NestJS + Mongoose**
 
-✨ Highlights
-🔐 Secure Authentication (JWT + Refresh Tokens + Google OAuth)
-🛍️ Full E-Commerce System (Products, Cart, Orders)
-💳 Stripe Payment Integration
-☁️ Cloudinary File Upload
-📊 Advanced Query Features (Filter, Sort, Pagination)
-🧱 Modular & Scalable Architecture
-🧠 Tech Stack
-Category	Technology
-Backend	NestJS
-Database	MongoDB (Mongoose)
-Auth	JWT, Refresh Tokens, Google OAuth
-Validation	class-validator
-File Upload	Cloudinary
-Payments	Stripe
-📦 Modules Overview
-Auth
-Users
-Products
-Cart
-Orders
-Categories & Subcategories
-Coupons
-Brands
-Reviews
-Tax
-Suppliers
-Requests
-⚙️ Core Features
-🔐 Authentication System
-JWT-based authentication
-Refresh token rotation
-Google OAuth login
-🛒 E-Commerce Logic
-Product management
-Shopping cart system
-Order lifecycle management
-💳 Payments
-Stripe integration
-Secure checkout flow
-☁️ Media Upload
-Image upload via Cloudinary
-📊 Query Handling
-Filtering (price, category, brand...)
-Sorting (ASC / DESC)
-Pagination (optimized performance)
-🔄 API Flow Example
-User → Auth → Products → Cart → Order → Payment → Confirmation
-🚀 Getting Started
+API قوية ومتكاملة لمتجر إلكتروني تدعم كل العمليات الأساسية للـ e-commerce مع أحدث التقنيات والمميزات.
+
+---
+
+## ✨ المميزات (Features)
+
+- **نظام المستخدمين والصلاحيات**  
+  - تسجيل دخول / تسجيل حساب (JWT + Refresh Token)  
+  - OAuth بواسطة Google  
+  - تأكيد البريد الإلكتروني وإعادة تعيين كلمة المرور
+
+- **إدارة المنتجات**  
+  - CRUD كامل للمنتجات  
+  - تصنيفات (Category + Subcategory)  
+  - Brands  
+  - Suppliers (موردين)  
+  - Tax (ضرائب)
+
+- **سلة التسوق (Cart)**  
+  - إضافة/حذف/تعديل المنتجات في السلة  
+  - حساب الإجمالي تلقائياً
+
+- **الطلبات (Orders)**  
+  - إنشاء طلب + تتبع حالة الطلب  
+  - تكامل الدفع بـ **Stripe**
+
+- **التقييمات والمراجعات (Reviews)**
+
+- **كوبونات الخصم (Coupons)**
+
+- **رفع الملفات**  
+  - رفع صور المنتجات والمستخدمين بـ **Cloudinary**
+
+- **نظام الاستعلامات المتقدم**  
+  - **Pagination**  
+  - **Filtering**  
+  - **Sorting**  
+  - **Search**
+
+- **طلبات إضافية (Requests)**  
+  - نظام طلبات خاص (مثل طلب منتج غير متوفر أو استفسارات)
+
+- **Validation قوي** باستخدام **class-validator** و **class-transformer**
+
+---
+
+## 🛠️ التقنيات المستخدمة (Tech Stack)
+
+| التقنية              | الاستخدام                          |
+|---------------------|------------------------------------|
+| **NestJS**          | Framework الباك إند                |
+| **Mongoose**        | ODM لـ MongoDB                     |
+| **MongoDB**         | قاعدة البيانات                     |
+| **class-validator** | Validation                         |
+| **JWT + Refresh Token** | Authentication                  |
+| **Passport + Google OAuth** | تسجيل دخول بجوجل               |
+| **Cloudinary**      | رفع وتخزين الصور                   |
+| **Stripe**          | بوابة الدفع                        |
+
+---
+
+## 📁 هيكل الموديلز (Models)
+
+- `User`
+- `Auth` (للـ tokens والـ sessions)
+- `Product`
+- `Category`
+- `Subcategory`
+- `Brand`
+- `Supplier`
+- `Tax`
+- `Cart`
+- `Order`
+- `Review`
+- `Coupon`
+- `Request`
+
+---
+
+## 🚀 طريقة التشغيل (Installation)
+
+### 1. Clone المشروع
+```bash
 git clone https://github.com/mohame04d/E-Commerce-Nest-
-cd E-Commerce-Nest-
-npm install
-npm run start:dev
-⚙️ Environment Variables
+Bashnpm install
+3. إعداد ملف .env
+أنشئ ملف .env في الـ root واملأ المتغيرات التالية:
+env# Database
+MONGO_URI=
+
+# JWT
+JWT_SECRET=your-super-secret-jwt-key
+JWT_EXPIRES_IN=1d
+REFRESH_TOKEN_SECRET=your-refresh-secret-key
+REFRESH_TOKEN_EXPIRES_IN=7d
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_CALLBACK_URL=
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+
+# Stripe
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# App
 PORT=3000
-MONGO_URI=your_mongo_uri
+NODE_ENV=development
+4. تشغيل المشروع
+Bash# Development mode
+npm run start:dev
 
-JWT_SECRET=your_jwt_secret
-REFRESH_TOKEN_SECRET=your_refresh_secret
+# Production mode
+npm run build
+npm run start:prod
 
-GOOGLE_CLIENT_ID=your_client_id
-GOOGLE_CLIENT_SECRET=your_client_secret
+📡 أهم الـ Endpoints (أمثلة)
 
-CLOUDINARY_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
+POST /auth/register → تسجيل حساب
+POST /auth/login → تسجيل دخول
+GET /auth/google → Google OAuth
+GET /products → جلب المنتجات (مع pagination, filter, sort)
+POST /cart/add → إضافة للسلة
+POST /orders → إنشاء طلب + دفع Stripe
+POST /upload → رفع صور (Cloudinary)
+POST /coupons/apply → تفعيل كوبون
 
-STRIPE_SECRET_KEY=your_stripe_key
-📈 Future Enhancements
-⚡ Redis Caching
-📊 Admin Dashboard
-🔔 Real-time Notifications (Socket.IO)
-📧 Email System
-👨‍💻 Author
+(كل الموديولز لها Controller + Service + Module منفصلة ومُنظمة)
 
-Mohamed Hakem
+🧪 Testing
+Bash# Unit + E2E tests
+npm run test
+npm run test:e2e
 
-⭐ Show Your Support
+📋 TODO / Future Features
 
-If you like this project, give it a ⭐ on GitHub — it really helps!
+ Admin Dashboard (NestJS + React/Vue)
+ Redis Cache
+ Rate Limiting + Security Headers
+ Email Service (Nodemailer + Templates)
+ Multi-language support
+ Docker + Docker Compose
+
+
+🤝 Contributing
+
+Fork المشروع
+اعمل Branch جديد (feature/amazing-feature)
+Commit (git commit -m 'Add amazing feature')
+Push (git push origin feature/amazing-feature)
+افتح Pull Request
+
+
+Made with ❤️ using NestJS & Mongoosee/ecommerce-nestjs.git
+cd ecommerce-nestjs
+
